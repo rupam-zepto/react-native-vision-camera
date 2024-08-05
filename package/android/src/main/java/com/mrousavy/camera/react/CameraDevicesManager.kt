@@ -61,19 +61,31 @@ class CameraDevicesManager(private val reactContext: ReactApplicationContext) : 
 
   override fun initialize() {
     super.initialize()
-    cameraManager.registerAvailabilityCallback(callback, null)
+    try {
+      cameraManager.registerAvailabilityCallback(callback, null)
+    } catch (_: Throwable) {
+        
+    }
     coroutineScope.launch {
-      Log.i(TAG, "Initializing ProcessCameraProvider...")
-      cameraProvider = ProcessCameraProvider.getInstance(reactContext).await(executor)
-      Log.i(TAG, "Initializing ExtensionsManager...")
-      extensionsManager = ExtensionsManager.getInstanceAsync(reactContext, cameraProvider!!).await(executor)
-      Log.i(TAG, "Successfully initialized!")
-      sendAvailableDevicesChangedEvent()
+      try {
+        Log.i(TAG, "Initializing ProcessCameraProvider...")
+        cameraProvider = ProcessCameraProvider.getInstance(reactContext).await(executor)
+        Log.i(TAG, "Initializing ExtensionsManager...")
+        extensionsManager = ExtensionsManager.getInstanceAsync(reactContext, cameraProvider!!).await(executor)
+        Log.i(TAG, "Successfully initialized!")
+        sendAvailableDevicesChangedEvent()
+      } catch (_: Throwable) {
+        
+      }
     }
   }
 
   override fun invalidate() {
-    cameraManager.unregisterAvailabilityCallback(callback)
+    try {
+      cameraManager.unregisterAvailabilityCallback(callback)
+    } catch (_: Throwable) {
+        
+    }
     super.invalidate()
   }
 

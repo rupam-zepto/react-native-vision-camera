@@ -9,7 +9,7 @@ const CameraDevicesManager = NativeModules.CameraDevices as {
 }
 
 const constants = CameraDevicesManager.getConstants()
-let devices = constants.availableCameraDevices
+let devices = constants?.availableCameraDevices || []
 
 const DEVICES_CHANGED_NAME = 'CameraDevicesChanged'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
